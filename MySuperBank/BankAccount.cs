@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace MySuperBank
 {
@@ -19,9 +20,10 @@ namespace MySuperBank
             } }
         private static int accountNumberSeed = 1234567890;
         private List<Transaction> allTransactions = new List<Transaction>();
-        public BankAccount(string name)
+        public BankAccount(string name, decimal initialBalance)
         {
             this.Owner = name;
+            MakeDeposit(initialBalance, DateTime.Now, "Initial balance");
             this.Number = accountNumberSeed.ToString();
             accountNumberSeed++;
         }
@@ -45,6 +47,17 @@ namespace MySuperBank
             }
             var withdrawal = new Transaction(-amount, date, note);
             allTransactions.Add(withdrawal);
+        }
+
+        public string GetAccountHistory()
+        {
+            var report = new StringBuilder();
+            report.AppendLine("Date\tAmount\tNote");
+            foreach (var item in allTransactions)
+            {
+                report.AppendLine($"{item.Date}\t{item.Amount}\t{item.Notes}");
+            }
+            return report.ToString();
         }
     }
 }
